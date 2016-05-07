@@ -1,6 +1,6 @@
 # UX Demo for User Registration
 
-This is an UX Demo project that uses [Material-UI](http://callemall.github.io/material-ui/).
+Live demo is [HERE](https://killalau.github.io/ux-demo-registration/).
 
 ## Installation
 
