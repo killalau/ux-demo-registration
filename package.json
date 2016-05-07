@@ -4,14 +4,19 @@
   "description": "UX demo project for user registration",
   "repository": {
     "type": "git",
-    "url": "https://github.com/killalau/ux-demo-registration.git"
+    "url": "git+https://github.com/killalau/ux-demo-registration.git"
   },
+  "author": "Franky Lau <killalau1988@hotmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/killalau/ux-demo-registration/issues"
+  },
+  "homepage": "https://killalau.github.io/ux-demo-registration/",
   "scripts": {
     "start": "webpack-dev-server --config webpack-dev-server.config.js --progress --inline --colors",
     "build": "webpack --config webpack-production.config.js --progress --colors",
     "lint": "eslint src && echo \"eslint: no lint errors\""
   },
-  "private": true,
   "devDependencies": {
     "babel-core": "^6.3.26",
     "babel-eslint": "^6.0.0",
