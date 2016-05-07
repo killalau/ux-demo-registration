@@ -4,7 +4,7 @@
   "description": "UX demo project for user registration",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/killalau/ux-demo-registration.git"
   },
   "scripts": {
     "start": "webpack-dev-server --config webpack-dev-server.config.js --progress --inline --colors",
