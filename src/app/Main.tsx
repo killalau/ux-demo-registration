@@ -23,6 +23,8 @@ interface AppState extends AppProps {
     email?: string,
     emailDirty?: boolean,
     emailError?: string,
+    username?: string,
+    password?: string,
 }
 
 const styles = {
@@ -57,7 +59,9 @@ class Main extends React.Component<AppProps, AppState> {
         this.handleRegisterTouchTap = this.handleRegisterTouchTap.bind(this);
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handleEmailKeyDown = this.handleEmailKeyDown.bind(this);
+        this.handleUsernameChange = this.handleUsernameChange.bind(this);
         this.handleUsernameKeyDown = this.handleUsernameKeyDown.bind(this);
+        this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handlePasswordKeyDown = this.handlePasswordKeyDown.bind(this);
 
         this.state = {
@@ -92,12 +96,26 @@ class Main extends React.Component<AppProps, AppState> {
         }
     }
 
+    handleUsernameChange(event) {
+        let state = Object.assign({}, this.state);
+        let value = event.target.value;
+        state.username = value;
+        this.setState(state);
+    }
+
     handleUsernameKeyDown(event) {
         if (event.keyCode === 13) {
             let state = Object.assign({}, this.state);
             state.progress++;
             this.setState(state);
         }
+    }
+
+    handlePasswordChange(event) {
+        let state = Object.assign({}, this.state);
+        let value = event.target.value;
+        state.password = value;
+        this.setState(state);
     }
 
     handlePasswordKeyDown(event) {
@@ -147,6 +165,7 @@ class Main extends React.Component<AppProps, AppState> {
                     style={styles.textfield}
                     floatingLabelText="Name"
                     hintText="How should people call you?"
+                    onChange={this.handleUsernameChange}
                     onKeyDown={this.handleUsernameKeyDown}
                     />
             </Step>,
@@ -161,6 +180,7 @@ class Main extends React.Component<AppProps, AppState> {
                     floatingLabelText="Password"
                     hintText="Password should always keep secret."
                     type="password"
+                    onChange={this.handlePasswordChange}
                     onKeyDown={this.handlePasswordKeyDown}
                     />
             </Step>,
@@ -170,7 +190,7 @@ class Main extends React.Component<AppProps, AppState> {
                 currentStep={this.state.progress}
                 >
                 <div style={styles.text}>
-                    <h2>Welcome, you have register successfully!</h2>
+                    <h2>Welcome, {this.state.username}</h2>
                 </div>
             </Step>
         ];
