@@ -11,15 +11,18 @@ import ProgressBackground from './ProgressBackground';
 import Step from './Step';
 
 const {RaisedButton, Paper, FlatButton, IconButton, TextField} = MaterialUi
-const {getMuiTheme, MuiThemeProvider, colors:{deepOrange500}} = Styles;
+const {getMuiTheme, MuiThemeProvider, colors: {deepOrange500}} = Styles;
 const {ActionInfo} = SvgIconSet;
 
 const muiTheme = getMuiTheme({});
 
-interface AppProps {}
+interface AppProps { }
 
 interface AppState extends AppProps {
     progress: number,
+    email?: string,
+    emailDirty?: boolean,
+    emailError?: string,
 }
 
 const styles = {
@@ -27,7 +30,7 @@ const styles = {
         textAlign: 'center',
         paddingTop: 200,
     },
-    form:{
+    form: {
         width: 600,
         height: 150,
         padding: 10,
@@ -52,6 +55,7 @@ class Main extends React.Component<AppProps, AppState> {
     constructor(props, context) {
         super(props, context);
         this.handleRegisterTouchTap = this.handleRegisterTouchTap.bind(this);
+        this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handleEmailKeyDown = this.handleEmailKeyDown.bind(this);
         this.handleUsernameKeyDown = this.handleUsernameKeyDown.bind(this);
         this.handlePasswordKeyDown = this.handlePasswordKeyDown.bind(this);
@@ -61,22 +65,35 @@ class Main extends React.Component<AppProps, AppState> {
         };
     }
 
-    handleRegisterTouchTap(){
+    handleRegisterTouchTap() {
         let state = Object.assign({}, this.state);
         state.progress++;
         this.setState(state);
     }
 
+    handleEmailChange(event) {
+        let state = Object.assign({}, this.state);
+        let value = event.target.value;
+        let isValid = /^[A-Z0-9\.-_]+@.*\.[A-Z]{2,3}$/i.test(value);
+        state.emailError = !isValid ? 'Please enter a valid Email.' : null;
+        state.email = value;
+        this.setState(state);
+    }
+
     handleEmailKeyDown(event) {
-        if(event.keyCode === 13){
+        if (event.keyCode === 13) {
             let state = Object.assign({}, this.state);
-            state.progress++;
+            state.emailDirty = true;
+
+            if (!state.emailError) {
+                state.progress++;
+            }
             this.setState(state);
         }
     }
 
     handleUsernameKeyDown(event) {
-        if(event.keyCode === 13){
+        if (event.keyCode === 13) {
             let state = Object.assign({}, this.state);
             state.progress++;
             this.setState(state);
@@ -84,7 +101,7 @@ class Main extends React.Component<AppProps, AppState> {
     }
 
     handlePasswordKeyDown(event) {
-        if(event.keyCode === 13){
+        if (event.keyCode === 13) {
             let state = Object.assign({}, this.state);
             state.progress++;
             this.setState(state);
@@ -97,59 +114,61 @@ class Main extends React.Component<AppProps, AppState> {
                 key={0}
                 step={0}
                 currentStep={this.state.progress}
-            >
+                >
                 <RaisedButton
                     style={styles.registerButton}
                     label="Register"
                     primary={true}
                     onTouchTap={this.handleRegisterTouchTap}
-                />
+                    />
             </Step>,
             <Step
                 key={1}
                 step={1}
                 currentStep={this.state.progress}
                 autoFocusSelector="input"
-            >
+                >
                 <TextField
                     style={styles.textfield}
                     floatingLabelText="Email"
                     hintText="Choose a Email for login and receive notifications."
+                    errorText={this.state.emailDirty ? this.state.emailError : null}
+                    onChange={this.handleEmailChange}
                     onKeyDown={this.handleEmailKeyDown}
-                />
+                    />
             </Step>,
             <Step
                 key={2}
                 step={2}
                 currentStep={this.state.progress}
                 autoFocusSelector="input"
-            >
+                >
                 <TextField
                     style={styles.textfield}
                     floatingLabelText="Name"
                     hintText="How should people call you?"
                     onKeyDown={this.handleUsernameKeyDown}
-                />
+                    />
             </Step>,
             <Step
                 key={3}
                 step={3}
                 currentStep={this.state.progress}
                 autoFocusSelector="input"
-            >
+                >
                 <TextField
                     style={styles.textfield}
                     floatingLabelText="Password"
                     hintText="Password should always keep secret."
                     type="password"
                     onKeyDown={this.handlePasswordKeyDown}
-                />
+                    />
             </Step>,
             <Step
                 key={4}
                 step={4}
                 currentStep={this.state.progress}
-            >
+                >
                 <div style={styles.text}>
                     <h2>Welcome, you have register successfully!</h2>
                 </div>
@@ -159,7 +178,7 @@ class Main extends React.Component<AppProps, AppState> {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div>
-                    <ProgressBackground progress={this.state.progress / (steps.length - 1)} />
+                    <ProgressBackground progress={this.state.progress / (steps.length - 1) } />
                     <div style={styles.container}>
                         <Paper style={styles.form} zDepth={1} className="clearfix">
                             <h1>UX Demo for User Registration</h1>
